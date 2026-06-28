@@ -18,9 +18,12 @@ class User(db.Model):
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
+@app.before_request
+def create_tables_once():
+    if not hasattr(app, 'tables_created'):
+        db.create_all()
+        app.tables_created = True
+
 
 @app.route('/')
 def index():
