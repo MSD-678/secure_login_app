@@ -1,24 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Secure Login</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 580px;
+            padding: 38px;
+            text-align: center;
+        }
+
+        .header {
+            border-bottom: 2px solid #1e3a8a;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+
+        .header h3 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0f172a;
+        }
+
+        .flash-message {
+            padding: 10px 14px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            border-left: 4px solid #16a34a;
+            background-color: #f0fdf4;
+            color: #166534;
+            text-align: left;
+        }
+
+        .content-box {
+            padding: 24px;
+            background-color: #f1f5f9;
+            border-left: 4px solid #1e3a8a;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .content-box h2 {
+            font-size: 19px;
+            color: #1e3a8a;
+            margin-bottom: 8px;
+        }
+
+        .content-box p {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #334155;
+        }
+
+        .btn-action {
+            display: inline-block;
+            padding: 10px 24px;
+            background-color: #1e3a8a;
+            color: #ffffff;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 15px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            margin: 6px;
+            transition: background-color 0.15s ease-in-out;
+        }
+
+        .btn-action:hover {
+            background-color: #172554;
+        }
+
+        .btn-logout {
+            background-color: #dc2626;
+        }
+
+        .btn-logout:hover {
+            background-color: #b91c1c;
+        }
+
+        .footer {
+            margin-top: 26px;
+            padding-top: 14px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 12px;
+            color: #64748b;
+        }
+    </style>
 </head>
 <body>
-  <h2>Welcome to Secure Login App</h2>
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      {% for category, message in messages %}
-        <div class="flash {{ category }}">{{ message }}</div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
 
-  {% if username %}
-    <p>Hello, {{ username }}!</p>
-    <a href="/logout">Logout</a>
-  {% else %}
-    <a href="/register">Register</a> | <a href="/login">Login</a>
-  {% endif %}
+<div class="container">
+    <div class="header">
+        <h3>R.M.D. Engineering College | Department of CSE</h3>
+        <h1>Authentication Dashboard</h1>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if username %}
+        <div class="content-box">
+            <h2>Session Authenticated</h2>
+            <p>Welcome, <strong>{{ username }}</strong>. Your identity has been verified via salted PBKDF2:SHA256 password evaluation and an encrypted session token.</p>
+        </div>
+        <a href="{{ url_for('logout') }}" class="btn-action btn-logout">Logout</a>
+    {% else %}
+        <div class="content-box">
+            <h2>Guest State</h2>
+            <p>You are currently not logged in. Please authenticate using the buttons below to establish an authorized session.</p>
+        </div>
+        <a href="{{ url_for('login') }}" class="btn-action">Login</a>
+        <a href="{{ url_for('register') }}" class="btn-action">Register</a>
+    {% endif %}
+
+    <div class="footer">
+        Cybersecurity Laboratory &bull; Parameterized SQLite Storage
+    </div>
+</div>
+
 </body>
 </html>
